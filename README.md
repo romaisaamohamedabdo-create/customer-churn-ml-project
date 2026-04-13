@@ -48,6 +48,6 @@ The model is deployed using Flask and allows real time predictions through a web
 
 ---
 
-## 🚀 How to Run
+## How to run
 1. Clone the repo
 2. Install dependencies:
