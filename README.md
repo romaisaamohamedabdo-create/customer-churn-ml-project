@@ -50,4 +50,15 @@ The model is deployed using Flask and allows real time predictions through a web
 
 ## How to run
 1. Clone the repo
-2. Install dependencies:
+   -pip install flask scikit-learn joblib numpy
+
+2. Run the app:
+   python app.py
+
+3. Open in browser:
+   http://127.0.0.1:5000/
+
+---
+
+##  Author
+Romaisaa mohamed 221000583
