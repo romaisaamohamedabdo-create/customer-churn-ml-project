@@ -4,7 +4,7 @@ Run locally:  python app.py
 Then open:    http://127.0.0.1:5000
 """
 
-from flask import os
+import os
 from flask import Flask, request, render_template, jsonify
 import joblib
 import numpy as np
