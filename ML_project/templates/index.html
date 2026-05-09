@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        .card { border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border: none; }
+        .header-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 16px 16px 0 0; padding: 2rem; text-align: center; }
+        .btn-predict { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; font-size: 1.1rem; }
+        .btn-predict:hover { opacity: 0.9; }
+        .result-box { border-radius: 12px; padding: 1.5rem; font-size: 1.15rem; font-weight: 600; text-align: center; }
+        .section-title { color: #764ba2; font-weight: 700; border-bottom: 2px solid #e8e0f5; padding-bottom: 6px; margin: 1.5rem 0 1rem; }
+        .form-label { font-weight: 600; color: #444; }
+        .hint { font-size: 0.8rem; color: #888; margin-top: 2px; }
+        .range-val { font-weight: bold; color: #764ba2; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <!-- Header -->
+                <div class="header-bg">
+                    <h2 class="mb-1">🔮 Customer Churn Predictor</h2>
+                    <p class="mb-0 opacity-75">Fill in the customer details below to predict if they will leave</p>
+                </div>
+
+                <div class="card-body p-4">
+                <form method="POST" action="/predict">
+
+                    <!-- SECTION 1: Customer Profile -->
+                    <h6 class="section-title">👤 Customer Profile</h6>
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Gender</label>
+                            <select class="form-select" name="Gender">
+                                <option value="0">Female</option>
+                                <option value="1">Male</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Marital Status</label>
+                            <select class="form-select" name="MaritalStatus">
+                                <option value="0">Single</option>
+                                <option value="1">Married</option>
+                                <option value="2">Divorced</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">City Tier</label>
+                            <select class="form-select" name="CityTier">
+                                <option value="1">Tier 1 — Big city (Cairo, Alexandria)</option>
+                                <option value="2">Tier 2 — Medium city</option>
+                                <option value="3">Tier 3 — Small city / town</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Preferred Payment Method</label>
+                            <select class="form-select" name="PreferredPaymentMode">
+                                <option value="0">Cash on Delivery</option>
+                                <option value="1">Credit Card</option>
+                                <option value="2">Debit Card</option>
+                                <option value="3">E-Wallet / UPI</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Preferred Order Category</label>
+                            <select class="form-select" name="PreferedOrderCat">
+                                <option value="0">Fashion</option>
+                                <option value="1">Grocery</option>
+                                <option value="2">Electronics / Laptop & Accessories</option>
+                                <option value="3">Mobile Phone</option>
+                                <option value="4">Others</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Number of Registered Devices</label>
+                            <select class="form-select" name="NumberOfDeviceRegistered">
+                                <option value="1">1 device</option>
+                                <option value="2">2 devices</option>
+                                <option value="3">3 devices</option>
+                                <option value="4">4 devices</option>
+                                <option value="5">5 devices</option>
+                                <option value="6">6 devices</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!-- SECTION 2: Activity -->
+                    <h6 class="section-title">📦 Order Activity</h6>
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Tenure (months with us)</label>
+                            <input type="range" class="form-range" name="Tenure" min="0" max="60" value="12"
+                                   oninput="document.getElementById('tenureVal').innerText = this.value">
+                            <div>Months: <span class="range-val" id="tenureVal">12</span></div>
+                            <div class="hint">How long has this customer been with the company?</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Days Since Last Order</label>
+                            <input type="range" class="form-range" name="DaySinceLastOrder" min="0" max="30" value="5"
+                                   oninput="document.getElementById('daysVal').innerText = this.value">
+                            <div>Days: <span class="range-val" id="daysVal">5</span></div>
+                            <div class="hint">How many days ago did they last order?</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Number of Addresses Saved</label>
+                            <select class="form-select" name="NumberOfAddress">
+                                <option value="1">1 address</option>
+                                <option value="2">2 addresses</option>
+                                <option value="3">3 addresses</option>
+                                <option value="4">4 addresses</option>
+                                <option value="5">5+ addresses</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Warehouse to Home Distance (km)</label>
+                            <input type="range" class="form-range" name="WarehouseToHome" min="5" max="100" value="20"
+                                   oninput="document.getElementById('warehouseVal').innerText = this.value">
+                            <div>km: <span class="range-val" id="warehouseVal">20</span></div>
+                        </div>
+
+                    </div>
+
+                    <!-- SECTION 3: Satisfaction -->
+                    <h6 class="section-title">⭐ Satisfaction & Issues</h6>
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Satisfaction Score</label>
+                            <select class="form-select" name="SatisfactionScore">
+                                <option value="1">1 ⭐ — Very Unsatisfied</option>
+                                <option value="2">2 ⭐ — Unsatisfied</option>
+                                <option value="3" selected>3 ⭐ — Neutral</option>
+                                <option value="4">4 ⭐ — Satisfied</option>
+                                <option value="5">5 ⭐ — Very Satisfied</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Did the customer complain?</label>
+                            <select class="form-select" name="Complain">
+                                <option value="0">No — No complaints</option>
+                                <option value="1">Yes — Raised a complaint</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Cashback Amount Received ($)</label>
+                            <input type="range" class="form-range" name="CashbackAmount" min="0" max="300" value="100"
+                                   oninput="document.getElementById('cashbackVal').innerText = this.value">
+                            <div>$<span class="range-val" id="cashbackVal">100</span></div>
+                            <div class="hint">Total cashback this customer received</div>
+                        </div>
+
+                    </div>
+
+                    <!-- Hidden computed engineered features -->
+                    <input type="hidden" name="EngagementScore" id="engagementScore" value="2.4">
+                    <input type="hidden" name="SatisfactionRisk" id="satisfactionRisk" value="33.3">
+
+                    <script>
+                        document.querySelector('form').addEventListener('submit', function() {
+                            var tenure = parseFloat(document.querySelector('[name=Tenure]').value) || 1;
+                            var days = parseFloat(document.querySelector('[name=DaySinceLastOrder]').value) || 1;
+                            var cashback = parseFloat(document.querySelector('[name=CashbackAmount]').value) || 1;
+                            var satisfaction = parseFloat(document.querySelector('[name=SatisfactionScore]').value) || 1;
+                            document.getElementById('engagementScore').value = (tenure / (days + 1)).toFixed(4);
+                            document.getElementById('satisfactionRisk').value = (cashback / (satisfaction + 1)).toFixed(4);
+                        });
+                    </script>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-predict btn-lg text-white fw-bold py-3">
+                            🔍 Predict Churn Risk
+                        </button>
+                    </div>
+
+                </form>
+
+                {% if prediction_text %}
+                <div class="mt-4 result-box alert alert-{{ color }}">
+                    <div style="font-size:1.3rem">{{ prediction_text }}</div>
+                    {% if risk_pct %}
+                    <div class="mt-2 fs-6 fw-normal">Churn probability: <strong>{{ risk_pct }}</strong></div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                </div>
+
+                <div class="card-footer text-center text-muted py-3">
+                    ML Final Project · Romaisaa Mohamed · 2026
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
