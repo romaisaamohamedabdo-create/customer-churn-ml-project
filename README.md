@@ -77,7 +77,7 @@ The tuned Random Forest model achieved Precision and Recall both above 0.3, meet
 
 The model is deployed using Flask and allows real-time predictions through a web interface with dropdowns and sliders for easy input.
 
-Live link: https://customer-churn-predictor.onrender.com
+Live link: (https://customer-churn-ml-project-production.up.railway.app/)
 
 ## How to Run
 
